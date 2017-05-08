@@ -3,7 +3,19 @@
 
 > Uglify JavaScript files with pull-stream
 
-<!-- TODO: Add screenshot/example/in-depth explanation/etc. -->
+Compiles [streamed files](https://npmjs.com/pull-files) with [`uglify-js`](https://npmjs.com/uglify-js)
+
+```js
+pull(
+  read([ 'index.js', 'test.js' ], { cwd: __dirname }),
+  uglify({ mangle: true }),
+  write('out', err => {
+    // done
+  })
+)
+```
+
+You can also compile buffers with `uglify.buffer` if you aren't streaming files
 
 ## Install
 
@@ -16,7 +28,32 @@ yarn add pull-uglify
 
 ## Usage
 
-<!-- TOOD: Add API documentation -->
+### `uglify(options?)`
+
+A stream that maps each file to the uglified version.  See [`uglify-js`'s options](https://www.npmjs.com/package/uglify-js#usage) for more information.
+
+```js
+pull(
+  read([ 'index.js', 'lib/**/*.js' ], { cwd: __dirname }),
+  bundle('app.js', [ 'es2040' ]),
+  uglify({ mangle: true }),
+  write('out', err => {
+    // ...
+  })
+)
+```
+
+### `uglify.buffer(options?)`
+
+The base implementation that compiles buffer to buffer, instead of file to file.  Options are the same
+
+```js
+pull(
+  readFile('foo.js'),
+  uglify.buffer({ mangle: true }),
+  writeFile('foo.min.js')
+)
+```
 
 ---
 
