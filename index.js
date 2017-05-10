@@ -12,26 +12,28 @@ uglify.buffer = buffer
 const UGLIFY_BIN = path.resolve(__dirname, 'node_modules/.bin/uglifyjs')
 
 function uglify (options) {
-  // Compile `file.data` on objects
-  return prop('data', () => buffer())
+  // Compile `file.data` property using the buffer stream
+  return prop('data', () =>  buffer())
 }
 
 function buffer (options) {
   const args = [UGLIFY_BIN].concat(dargs(options || {}))
   const uglifier = spawn('node', args, { stdio: 'pipe' })
+  let ended = false
+
   return asyncMap((buf, done) => {
     pull(uglifier, collect((err, data) => {
       if (err) return done(err)
-      done(null, data[0])
+      done(null, Buffer.concat(data))
     }))
   
     pull(once(buf), uglifier)
 
-    pull(uglifier.error, collect((err, buf) => {
+    pull(uglifier.error, collect((err, message) => {
       if (err) return done(err)
-      buf = Buffer.concat(buf)
+      message = Buffer.concat(message)
       if (buf && buf.length) {
-        done(new Error(buf.toString()))
+        done(new Error(message.toString()))
       }
     }))
   })
