@@ -16,7 +16,7 @@ pull(
     mangle: true,
     toplevel: true
   }),
-  write('out', err => {
+  write(__dirname + '/out', err => {
     // done
   })
 )
@@ -38,7 +38,7 @@ pull(
 npm install --save pull-minify-js
 ```
 
-```
+```sh
 yarn add pull-minify-js
 ```
 
