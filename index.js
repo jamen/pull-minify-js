@@ -18,23 +18,16 @@ function uglify (options) {
 
 function buffer (options) {
   const args = [UGLIFY_BIN].concat(dargs(options || {}))
-  const uglifier = spawn('node', args, { stdio: 'pipe' })
+  const uglifier = spawn('node', args)
   let ended = false
 
   return asyncMap((buf, done) => {
     pull(uglifier, collect((err, data) => {
+      if (ended) return
       if (err) return done(err)
       done(null, Buffer.concat(data))
     }))
   
     pull(once(buf), uglifier)
-
-    pull(uglifier.error, collect((err, message) => {
-      if (err) return done(err)
-      message = Buffer.concat(message)
-      if (buf && buf.length) {
-        done(new Error(message.toString()))
-      }
-    }))
   })
 }

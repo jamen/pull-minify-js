@@ -25,5 +25,3 @@ test('uglifier', t => {
     })
   )
 })
-
-
