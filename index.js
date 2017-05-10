@@ -1,10 +1,8 @@
 
 const pull = require('pull-stream')
 const { map, filter } = pull
-const spawn = require('pull-spawn-process')
-const dargs = require('dargs')
 const { extname } = require('path')
-const prop = require('pull-prop')
+const replace = require('pull-prop')
 const uglifier = require('uglify-js')
 
 module.exports = uglify
@@ -14,8 +12,8 @@ uglify.buffer = buffer
 function uglify (options) {
   // Compile `file.data` property using the buffer stream
   return pull(
-    filter(({ path }) => extname(path) === '.js'),
-    prop('data', _ => buffer(options))
+    filter(file => extname(file.path) === '.js'),
+    replace('data', _ => buffer(options))
   )
 }
 

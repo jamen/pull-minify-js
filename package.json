@@ -10,17 +10,18 @@
   },
   "keywords": [
     "jamen",
-    "pull-uglify"
+    "pull-stream",
+    "pull-build-tools",
+    "uglify",
+    "minify",
+    "javascript"
   ],
   "devDependencies": {
     "pull-files": "^1.1.0",
     "tape": "^4.6.3"
   },
   "dependencies": {
-    "dargs": "^5.1.0",
-    "pull-paramap": "^1.2.2",
     "pull-prop": "^0.3.0",
-    "pull-spawn-process": "^0.3.0",
     "pull-stream": "^3.5.0",
     "uglify-js": "^3.0.1"
   }
