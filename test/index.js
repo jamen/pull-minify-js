@@ -3,15 +3,16 @@ const test = require('tape')
 const pull = require('pull-stream')
 const { values, through, drain } = pull
 const uglify = require('../')
+const { extname } = require('path')
 
 test('uglifier', t => {
-  t.plan(2)
+  t.plan(3)
 
   var original = null
 
   pull(
     values([
-      { path: 'foo.js', data: 'if (foo) { }' },
+      { path: 'foo.js', data: 'if (foo) {}' },
       { path: 'bar.js', data: 'baz && qux' }
     ]),
     through(file => {
@@ -22,6 +23,51 @@ test('uglifier', t => {
       file.after = file.data.length
       console.log(file)
       t.true(file.after <= file.before, 'got uglified output') 
+    }, t.error)
+  )
+})
+
+
+test('uglifier error', t => {
+  t.plan(1)
+
+  pull(
+    values([
+      { path: 'foo.js', data: 'bad code rip' },
+      { path: 'bar.js', data: 'baz && qux' }
+    ]),
+    uglify(),
+    drain(file => {
+      t.fail('should not get file')
+    }, t.true)
+  )
+})
+
+test('non js files', t => {
+  t.plan(1)
+
+  pull(
+    values([
+      { path: 'foo.css', data: '.foo {}' },
+      { path: 'bar.js', data: 'foo && bar' }
+    ]),
+    uglify(),
+    drain(file => {
+      t.is(extname(file.path), '.js', 'got js file')
+    })
+  )
+})
+
+test('takes mangle option', t => {
+  t.plan(1)
+  
+  pull(
+    values([
+      { path: 'foo.js', data: 'var foo = kek(); bar(foo); baz(foo)' }
+    ]),
+    uglify({ mangle: true, toplevel: true }),
+    drain(file => {
+      t.is(file.data.toString(), 'var a=kek();bar(a),baz(a);')
     })
   )
 })
