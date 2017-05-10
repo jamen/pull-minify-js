@@ -1,7 +1,7 @@
 {
   "name": "pull-uglify",
   "description": "Uglify JavaScript files with pull-stream",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Jamen Marz (https://git.io/jamen)",
   "main": "index.js",
   "repository": "jamen/pull-uglify",
