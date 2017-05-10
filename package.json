@@ -1,7 +1,7 @@
 {
   "name": "pull-minify-js",
   "description": "Minify JavaScript files or buffers inside a pull-stream",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": "Jamen Marz (https://git.io/jamen)",
   "main": "index.js",
   "repository": "jamen/pull-minify-js",
