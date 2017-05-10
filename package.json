@@ -1,10 +1,10 @@
 {
-  "name": "pull-uglify",
-  "description": "Uglify JavaScript files with pull-stream",
+  "name": "pull-minify-js",
+  "description": "Minify JavaScript files or buffers inside a pull-stream",
   "version": "0.5.0",
   "author": "Jamen Marz (https://git.io/jamen)",
   "main": "index.js",
-  "repository": "jamen/pull-uglify",
+  "repository": "jamen/pull-minify-js",
   "scripts": {
     "test": "node test"
   },

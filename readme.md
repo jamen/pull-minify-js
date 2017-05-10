@@ -1,42 +1,58 @@
 
-# pull-uglify
+# pull-minify-js
 
-> Uglify JavaScript files with pull-stream
+> Minify JavaScript files or buffers inside a pull-stream
 
-Compiles [streamed files](https://npmjs.com/pull-files) with [`uglify-js`](https://npmjs.com/uglify-js)
+Minifies [streamed JavaScript files](https://npmjs.com/pull-files) using [`uglify-js`](https://npmjs.com/uglify-js)
 
 ```js
+const pull = require('pull-stream')
+const { read, write } = require('pull-files')
+const minify = require('pull-minify-js')
+
 pull(
   read([ 'index.js', 'test.js' ], { cwd: __dirname }),
-  uglify({ mangle: true }),
+  minify({
+    mangle: true,
+    toplevel: true
+  }),
   write('out', err => {
     // done
   })
 )
 ```
 
-You can also compile buffers with `uglify.buffer` if you aren't streaming files
+Use `uglify.buffer` if you are streaming JavaScript buffers instead
+
+```js
+pull(
+  readFile(__dirname + '/foo.js'),
+  uglify.buffer({ mangle: true, toplevel: true }),
+  writeFile(__dirname + '/out.js')
+)
+```
 
 ## Install
 
 ```sh
-npm install --save pull-uglify
+npm install --save pull-minify-js
+```
 
-# with yarn
-yarn add pull-uglify
+```
+yarn add pull-minify-js
 ```
 
 ## Usage
 
-### `uglify(options?)`
+### `minify(options?)`
 
-A stream that maps each file to the uglified version.  See [`uglify-js`'s options](https://www.npmjs.com/package/uglify-js#usage) for more information.
+A stream that maps each JavaScript file to the minified version.  See [`uglify-js`'s options](https://www.npmjs.com/package/uglify-js#usage) further configuration.
 
 ```js
 pull(
   read([ 'index.js', 'lib/**/*.js' ], { cwd: __dirname }),
   bundle('app.js', [ 'es2040' ]),
-  uglify({ mangle: true }),
+  uglify({ ...options }),
   write('out', err => {
     // ...
   })
@@ -50,7 +66,7 @@ The base implementation that compiles buffer to buffer, instead of file to file.
 ```js
 pull(
   readFile('foo.js'),
-  uglify.buffer({ mangle: true }),
+  uglify.buffer({ ...options }),
   writeFile('foo.min.js')
 )
 ```
