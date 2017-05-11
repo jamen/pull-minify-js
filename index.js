@@ -8,7 +8,6 @@ const uglify = require('uglify-js')
 module.exports = minify
 minify.buffer = buffer
 
-
 function minify (options) {
   if (!options) options = {}
 
@@ -20,7 +19,7 @@ function minify (options) {
       if (!strict || extname(file.path) === '.js') {
         return file
       } else { 
-        throw new Error('Cannot minify non-JS files (' + file.path + ')')
+        throw new Error(`Can only minify JS files (got ${file.path})`)
       }
     }),
     replace('data', _ => buffer(options))
