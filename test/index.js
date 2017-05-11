@@ -53,7 +53,9 @@ test('non js files', t => {
     ]),
     minify(),
     drain(file => {
-      t.is(extname(file.path), '.js', 'got js file')
+      t.false(extname(file.path), '.js', 'got js file')
+    }, err => {
+      t.true(err, 'got error')
     })
   )
 })

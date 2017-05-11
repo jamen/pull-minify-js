@@ -59,6 +59,12 @@ pull(
 )
 ```
 
+You can make it map all files regardless of extensions, by passing `strict: false`
+
+```js
+minify({ strict: false, ... })
+```
+
 ### `uglify.buffer(options?)`
 
 The base implementation that compiles buffer to buffer, instead of file to file.  Options are the same

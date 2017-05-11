@@ -10,9 +10,19 @@ minify.buffer = buffer
 
 
 function minify (options) {
+  if (!options) options = {}
+
+  const strict = options.strict !== undefined ? options.strict : true
+
   // Compile `file.data` property using the buffer stream
   return pull(
-    filter(file => extname(file.path) === '.js'),
+    map(file => {
+      if (!strict || extname(file.path) === '.js') {
+        return file
+      } else { 
+        throw new Error('Cannot minify non-JS files (' + file.path + ')')
+      }
+    }),
     replace('data', _ => buffer(options))
   )
 }
