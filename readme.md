@@ -22,12 +22,12 @@ pull(
 )
 ```
 
-Use `uglify.buffer` if you are streaming JavaScript buffers instead
+Use `minify.buffer` if you are streaming JavaScript buffers instead
 
 ```js
 pull(
   readFile(__dirname + '/foo.js'),
-  uglify.buffer({ mangle: true, toplevel: true }),
+  minify.buffer({ mangle: true, toplevel: true }),
   writeFile(__dirname + '/out.js')
 )
 ```
@@ -53,7 +53,7 @@ pull(
   read([ 'index.js', 'lib/**/*.js' ], { cwd: __dirname }),
   bundle('app.js', [ 'es2040' ]),
   uglify({ ...options }),
-  write('out', err => {
+  write(__dirname + '/out', err => {
     // ...
   })
 )
@@ -65,15 +65,15 @@ You can make it map all files regardless of extensions, by passing `strict: fals
 minify({ strict: false, ... })
 ```
 
-### `uglify.buffer(options?)`
+### `minify.buffer(options?)`
 
 The base implementation that compiles buffer to buffer, instead of file to file.  Options are the same
 
 ```js
 pull(
-  readFile('foo.js'),
-  uglify.buffer({ ...options }),
-  writeFile('foo.min.js')
+  readFile(__dirname + '/foo.js'),
+  minify.buffer({ ...options }),
+  writeFile(__dirname + '/foo.min.js')
 )
 ```
 
