@@ -28,7 +28,7 @@ function minify (options) {
 
 function buffer (options) {
   return map((buf) => {
-    var { code, error } = uglify.minify(buf.toString('utf'), options)
+    var { code, error } = uglify.minify(buf.toString('utf8'), options)
     if (error) throw error
     return Buffer.from(code)
   })
